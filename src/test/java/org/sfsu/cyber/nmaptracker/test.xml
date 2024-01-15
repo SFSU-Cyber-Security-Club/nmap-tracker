@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.93 scan initiated Thu Jan 11 23:08:45 2024 as: nmap -T4 -&#45;top-ports 50 -oX /media/sf_shared/nmapxml/subnet-top-50 192.168.56.1/24 -->
+<nmaprun scanner="nmap" args="nmap -T4 -&#45;top-ports 50 -oX /media/sf_shared/nmapxml/subnet-top-50 192.168.56.1/24" start="1705043325" startstr="Thu Jan 11 23:08:45 2024" version="7.93" xmloutputversion="1.05">
+    <scaninfo type="connect" protocol="tcp" numservices="50" services="21-23,25-26,53,80-81,110-111,113,135,139,143,179,199,443,445,465,514-515,548,554,587,646,993,995,1025-1027,1433,1720,1723,2000-2001,3306,3389,5060,5666,5900,6001,8000,8008,8080,8443,8888,10000,32768,49152,49154"/>
+    <verbose level="0"/>
+    <debugging level="0"/>
+    <hosthint>
+        <status state="up" reason="unknown-response" reason_ttl="0"/>
+        <address addr="192.168.56.1" addrtype="ipv4"/>
+        <hostnames>
+        </hostnames>
+    </hosthint>
+    <hosthint>
+        <status state="up" reason="unknown-response" reason_ttl="0"/>
+        <address addr="192.168.56.102" addrtype="ipv4"/>
+        <hostnames>
+        </hostnames>
+    </hosthint>
+    <host starttime="1705043335" endtime="1705043335">
+        <status state="up" reason="conn-refused" reason_ttl="0"/>
+        <address addr="192.168.56.1" addrtype="ipv4"/>
+        <hostnames>
+        </hostnames>
+        <ports>
+            <extraports state="closed" count="46">
+                <extrareasons reason="conn-refused" count="46" proto="tcp" ports="21-23,25-26,53,80-81,110-111,113,143,179,199,443,465,514-515,548,554,587,646,993,995,1025-1027,1433,1720,1723,2000-2001,3306,5060,5666,5900,6001,8000,8008,8080,8443,8888,10000,32768,49152,49154"/>
+            </extraports>
+            <port protocol="tcp" portid="135">
+                <state state="open" reason="syn-ack" reason_ttl="0"/>
+                <service name="msrpc" method="table" conf="3"/>
+            </port>
+            <port protocol="tcp" portid="139">
+                <state state="open" reason="syn-ack" reason_ttl="0"/>
+                <service name="netbios-ssn" method="table" conf="3"/>
+            </port>
+            <port protocol="tcp" portid="445">
+                <state state="open" reason="syn-ack" reason_ttl="0"/>
+                <service name="microsoft-ds" method="table" conf="3"/>
+            </port>
+            <port protocol="tcp" portid="3389">
+                <state state="open" reason="syn-ack" reason_ttl="0"/>
+                <service name="ms-wbt-server" method="table" conf="3"/>
+            </port>
+        </ports>
+        <times srtt="137" rttvar="118" to="100000"/>
+    </host>
+    <host starttime="1705043335" endtime="1705043335">
+        <status state="up" reason="conn-refused" reason_ttl="0"/>
+        <address addr="192.168.56.102" addrtype="ipv4"/>
+        <hostnames>
+        </hostnames>
+        <ports>
+            <extraports state="closed" count="49">
+                <extrareasons reason="conn-refused" count="49" proto="tcp" ports="21,23,25-26,53,80-81,110-111,113,135,139,143,179,199,443,445,465,514-515,548,554,587,646,993,995,1025-1027,1433,1720,1723,2000-2001,3306,3389,5060,5666,5900,6001,8000,8008,8080,8443,8888,10000,32768,49152,49154"/>
+            </extraports>
+            <port protocol="tcp" portid="22">
+                <state state="open" reason="syn-ack" reason_ttl="0"/>
+                <service name="ssh" method="table" conf="3"/>
+            </port>
+        </ports>
+        <times srtt="178" rttvar="146" to="100000"/>
+    </host>
+    <runstats>
+        <finished time="1705043335" timestr="Thu Jan 11 23:08:55 2024" summary="Nmap done at Thu Jan 11 23:08:55 2024; 256 IP addresses (2 hosts up) scanned in 9.97 seconds" elapsed="9.97" exit="success"/>
+        <hosts up="2" down="254" total="256"/>
+    </runstats>
+</nmaprun>
