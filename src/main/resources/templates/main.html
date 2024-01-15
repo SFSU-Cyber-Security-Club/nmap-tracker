@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css"
+    />
+    <title>Nmap Tracker</title>
+    <style>
+      body {
+        background-color: #f4f4f4;
+        color: #2a0d45;
+      }
+      .container {
+        padding: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="container-fluid">
+      <ul>
+        <li><strong>Nmap Tracker</strong></li>
+      </ul>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Monitor Script</a></li>
+        <li><a href="#">About</a></li>
+      </ul>
+    </nav>
+    <main class="container">
+      <div class="grid">
+        <section>
+          <hgroup>
+            <h2>Welcome to Nmap Tracker</h2>
+            <h3>Your hub for pentesting scan data</h3>
+          </hgroup>
+          <p>
+            This application allows pentesting teams to share and analyze nmap
+            scan data. Easily filter, sort, and delve into detailed scan
+            information.
+          </p>
+
+          <!-- main starts here -->
+          <h3>Scan Data</h3>
+          <div th:replace="scans :: scans-list"></div>
+
+          <!-- main ends here -->
+        </section>
+      </div>
+    </main>
+    <section aria-label="Download Script">
+      <div class="container">
+        <article>
+          <hgroup>
+            <h2>Monitor Script</h2>
+            <h3>Download and integrate easily</h3>
+          </hgroup>
+          <p>
+            Get our custom monitor script for real-time scan tracking.
+            <a href="#">Download here</a>.
+          </p>
+        </article>
+      </div>
+    </section>
+    <footer class="container">
+      <small
+        ><a href="https://github.com">GitHub Repository</a> •
+        <a href="#">About Nmap Tracker</a></small
+      >
+    </footer>
+  </body>
+</html>

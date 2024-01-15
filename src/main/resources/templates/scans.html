@@ -1,0 +1,38 @@
+<div th:fragment="scans-list">
+  <ul>
+    <li th:each="scan : ${scans}">
+      <span th:text="'Args: ' + ${scan.args}"></span><br />
+      <span th:text="'Start Time: ' + ${scan.startstr}"></span><br />
+      <!-- Hosts -->
+      <div>
+        Hosts:
+        <ul>
+          <!-- for each host -->
+          <li th:each="host : ${scan.hosts}">
+            <span th:text="${host.address.addr}"></span>
+            <!-- Ports -->
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Port</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Service</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- for each port -->
+                  <tr th:each="port : ${host.ports}">
+                    <td th:text="${port.portid}"></td>
+                    <td th:text="${port.state.state}"></td>
+                    <td th:text="${port.service.name}"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </li>
+  </ul>
+</div>
