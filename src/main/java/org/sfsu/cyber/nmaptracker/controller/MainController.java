@@ -40,20 +40,10 @@ public class MainController {
     //     return "main"; // The name of the Thymeleaf template
     // }
 
-    @GetMapping("/scans")
+    @GetMapping("/")
     public String showScans(Model model) {
         Collection<Scan> allScans = scanService.getAllScans();
         model.addAttribute("scans", allScans);
         return "main"; // The name of the Thymeleaf template
-    }
-
-    // @GetMapping("/")
-    // public @ResponseBody String index() {
-    //     return "Greetings from Spring Boot!!";
-    // }
-
-    @GetMapping("/")
-    public String index() {
-        return "test";
     }
 }
