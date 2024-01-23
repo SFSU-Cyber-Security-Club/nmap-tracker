@@ -17,6 +17,28 @@
         padding: 2rem;
       }
     </style>
+    <script>
+      function submitFilters(event) {
+        event.preventDefault();
+        var ip = document.getElementById("filterByAddr").value;
+        var port = document.getElementById("filterByPort").value;
+        var currentUrl = window.location.href.split("?")[0];
+        window.location.href =
+          currentUrl + "?filterByAddr=" + ip + "&filterByPort=" + port;
+      }
+
+      function copyUrl(event) {
+        event.preventDefault();
+        navigator.clipboard
+          .writeText(window.location.href)
+          .then(() => {
+            console.log("Location URL copied to clipboard");
+          })
+          .catch((err) => {
+            console.error("Could not copy text: ", err);
+          });
+      }
+    </script>
   </head>
   <body>
     <nav class="container-fluid">
@@ -24,33 +46,70 @@
         <li><strong>Nmap Tracker</strong></li>
       </ul>
       <ul>
+        <li>
+          <a
+            href="#"
+            role="button"
+            class="secondary outline"
+            onclick="copyUrl(event)"
+            >Copy URL to Clipboard</a
+          >
+        </li>
         <li><a href="#">Home</a></li>
-        <li><a href="#">Monitor Script</a></li>
-        <li><a href="#">About</a></li>
+        <li><a href="#monitorScript">Monitor Script</a></li>
+        <li><a href="#about">About</a></li>
       </ul>
     </nav>
     <main class="container">
-      <div class="grid">
-        <section>
+      <section id="main">
+        <article>
           <hgroup>
             <h2>Welcome to Nmap Tracker</h2>
-            <h3>Your hub for pentesting scan data</h3>
+            <h3>Your hub for nmap scan data</h3>
           </hgroup>
-          <p>
-            This application allows pentesting teams to share and analyze nmap
-            scan data. Easily filter, sort, and delve into detailed scan
-            information.
-          </p>
 
           <!-- main starts here -->
-          <h3>Scan Data</h3>
+          <h3>Scan List</h3>
+          <form onsubmit="submitFilters(event)" style="display: flex">
+            <label
+              for="filterByAddr"
+              style="float: left; margin-right: 10px; width: 200px"
+              >Filter by Address:</label
+            >
+            <input
+              type="text"
+              id="filterByAddr"
+              name="filterByAddr"
+              th:value="${filterByAddr}"
+              style="float: left; margin-right: 10px"
+            />
+            <label
+              for="filterByPort"
+              style="float: left; margin-right: 10px; width: 200px"
+              >Filter by Port:</label
+            >
+            <input
+              type="text"
+              id="filterByPort"
+              name="filterByPort"
+              th:value="${filterByPort}"
+              style="float: left; margin-right: 10px; width: 100px"
+            />
+            <input
+              type="submit"
+              value="Submit"
+              style="float: left; width: 200px"
+            />
+          </form>
+
           <div th:replace="scans :: scans-list"></div>
 
           <!-- main ends here -->
-        </section>
-      </div>
+        </article>
+      </section>
     </main>
-    <section aria-label="Download Script">
+    <!-- Monitor Script -->
+    <section id="monitorScript" aria-label="Monitor Script">
       <div class="container">
         <article>
           <hgroup>
@@ -64,10 +123,34 @@
         </article>
       </div>
     </section>
+
+    <section id="about" aria-label="About Nmap Tracker">
+      <div class="container">
+        <article>
+          <hgroup>
+            <h2>About Nmap Tracker</h2>
+            <h3>
+              Why we, the SFSU Cyber Security Club, decided to create this.
+            </h3>
+          </hgroup>
+          <p>
+            We wanted to find a way for our pentesting team to share and analyze
+            nmap scan data, during contests like CPTC. It was important that we
+            had a centralize location for the results of our scans, and to find
+            a means to easily filter, sort, and delve into detailed scan
+            information.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Footer -->
     <footer class="container">
       <small
-        ><a href="https://github.com">GitHub Repository</a> •
-        <a href="#">About Nmap Tracker</a></small
+        ><a href="https://github.com/SFSU-Cyber-Security-Club/nmap-tracker"
+          >GitHub Repository</a
+        >
+        • <a href="#">About Nmap Tracker</a></small
       >
     </footer>
   </body>

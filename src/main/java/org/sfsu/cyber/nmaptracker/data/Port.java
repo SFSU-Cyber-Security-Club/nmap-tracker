@@ -29,6 +29,10 @@ public class Port {
         return portid;
     }
 
+    public String getPortidString() {
+        return Integer.toString(portid);
+    }
+
     public void setPortid(int portid) {
         this.portid = portid;
     }

@@ -14,9 +14,11 @@ public class Scan {
     private RunStats runstats;
 
     // Constructors
-    public Scan() {}
+    public Scan() {
+    }
 
-    public Scan(String scanner, String args, long start, String startstr, String version, String xmloutputversion, List<Host> hosts, RunStats runstats) {
+    public Scan(String scanner, String args, long start, String startstr, String version, String xmloutputversion,
+            List<Host> hosts, RunStats runstats) {
         this.scanner = scanner;
         this.args = args;
         this.start = start;
@@ -30,17 +32,59 @@ public class Scan {
     // needed to check for dupes in a HashSet of Scans
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Scan scan = (Scan) o;
         return start == scan.start &&
-               Objects.equals(args, scan.args);
+                Objects.equals(args, scan.args);
     }
 
     @Override
     public int hashCode() {
         // potentially an issue if args and start isn't enough to avoid collisions
         return Objects.hash(args, start);
+    }
+
+    public boolean containsAddr(String address, boolean patternMatch) {
+        for (Host host : this.hosts) {
+            if (patternMatch) {
+                if (host.getAddr().toLowerCase().matches(address.toLowerCase())) {
+                    return true;
+                }
+            } else {
+                if (host.getAddr().equals(address)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean containsAddr(String address) {
+        return containsAddr(address, true);
+    }
+
+    public boolean containsPort(String port, boolean patternMatch) {
+        for (Host host : this.hosts) {
+            for (Port p : host.getPorts()) {
+                if (patternMatch) {
+                    if (p.getPortidString().toLowerCase().matches(port.toLowerCase())) {
+                        return true;
+                    }
+                } else {
+                    if (p.getPortidString().equals(port)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean containsPort(String port) {
+        return containsPort(port, true);
     }
 
     // Getters and setters
@@ -119,9 +163,11 @@ public class Scan {
         private int total;
 
         // Constructors
-        public RunStats() {}
+        public RunStats() {
+        }
 
-        public RunStats(long time, String timestr, String summary, double elapsed, String exit, int up, int down, int total) {
+        public RunStats(long time, String timestr, String summary, double elapsed, String exit, int up, int down,
+                int total) {
             this.time = time;
             this.timestr = timestr;
             this.summary = summary;
@@ -198,5 +244,3 @@ public class Scan {
         }
     }
 }
-
-

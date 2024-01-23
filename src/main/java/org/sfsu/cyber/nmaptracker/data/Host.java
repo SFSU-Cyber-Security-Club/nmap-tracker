@@ -11,7 +11,8 @@ public class Host {
     private Times times;
 
     // Constructors
-    public Host() {}
+    public Host() {
+    }
 
     public Host(long starttime, long endtime, Status status, Address address, List<Port> ports, Times times) {
         this.starttime = starttime;
@@ -23,6 +24,10 @@ public class Host {
     }
 
     // Getters and setters
+    public String getAddr() {
+        return address.getAddr();
+    }
+
     public long getStarttime() {
         return starttime;
     }
@@ -77,7 +82,8 @@ public class Host {
         private int reasonTtl;
 
         // Constructors
-        public Status() {}
+        public Status() {
+        }
 
         public Status(String state, String reason, int reasonTtl) {
             this.state = state;
@@ -116,7 +122,8 @@ public class Host {
         private String addrtype;
 
         // Constructors
-        public Address() {}
+        public Address() {
+        }
 
         public Address(String addr, String addrtype) {
             this.addr = addr;
@@ -147,7 +154,8 @@ public class Host {
         private int to;
 
         // Constructors
-        public Times() {}
+        public Times() {
+        }
 
         public Times(int srtt, int rttvar, int to) {
             this.srtt = srtt;
