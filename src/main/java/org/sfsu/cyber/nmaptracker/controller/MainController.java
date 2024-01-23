@@ -10,20 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-// @Controller
-// public class MainController {
-
-//     @Autowired
-//     private ScanService scanService;
-
-//     @GetMapping("/")
-//     public String hello(Model model) {
-//         Collection<Scan> allScans = scanService.getAllScans();
-//         model.addAttribute("scans", allScans);
-//         return "main"; // Corresponds to main template
-//     }
-// }
-
 @Controller
 public class MainController {
 
@@ -32,13 +18,6 @@ public class MainController {
     public MainController(ScanService scanService) {
         this.scanService = scanService;
     }
-
-    // @GetMapping("/scans")
-    // public String showScans(Model model) {
-    //     Collection<Scan> allScans = scanService.getAllScans();
-    //     model.addAttribute("scans", allScans);
-    //     return "main"; // The name of the Thymeleaf template
-    // }
 
     @GetMapping("/")
     public String showScans(Model model) {

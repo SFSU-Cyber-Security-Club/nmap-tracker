@@ -90,32 +90,5 @@ public class HostFactory {
         transformer.transform(new DOMSource(element), new StreamResult(writer));
         return writer.toString();
     }
-
-    // public static void main(String[] args) {
-    //     String xml = "<host starttime=\"1705043335\" endtime=\"1705043335\">\r\n" + //
-    //             "    <status state=\"up\" reason=\"conn-refused\" reason_ttl=\"0\"/>\r\n" + //
-    //             "    <address addr=\"192.168.56.1\" addrtype=\"ipv4\"/>\r\n" + //
-    //             "    <hostnames>\r\n" + //
-    //             "    </hostnames>\r\n" + //
-    //             "    <ports>\r\n" + //
-    //             "        <port protocol=\"tcp\" portid=\"135\">\r\n" + //
-    //             "            <state state=\"open\" reason=\"syn-ack\" reason_ttl=\"0\"/>\r\n" + //
-    //             "            <service name=\"msrpc\" method=\"table\" conf=\"3\"/>\r\n" + //
-    //             "        </port>\r\n" + //
-    //             "        <port protocol=\"tcp\" portid=\"139\">\r\n" + //
-    //             "            <state state=\"open\" reason=\"syn-ack\" reason_ttl=\"0\"/>\r\n" + //
-    //             "            <service name=\"netbios-ssn\" method=\"table\" conf=\"3\"/>\r\n" + //
-    //             "        </port>\r\n" + //
-    //             "    </ports>\r\n" + //
-    //             "    <times srtt=\"137\" rttvar=\"118\" to=\"100000\"/>\r\n" + //
-    //             "</host>"; 
-
-    //     try {
-    //         Host host = createHostFromXml(xml);
-    //         // Do something with the host object
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //     }
-    // }
 }
 

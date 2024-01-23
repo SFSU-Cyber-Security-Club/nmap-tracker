@@ -56,18 +56,4 @@ public class PortFactory {
 
         return port;
     }
-
-    // public static void main(String[] args) {
-    //     String xml = "<port protocol=\"tcp\" portid=\"135\">\n" +
-    //                  "    <state state=\"open\" reason=\"syn-ack\" reason_ttl=\"0\"/>\n" +
-    //                  "    <service name=\"msrpc\" method=\"table\" conf=\"3\"/>\n" +
-    //                  "</port>";
-
-    //     try {
-    //         Port port = createPortFromXml(xml);
-    //         // Do something with the port object
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //     }
-    // }
 }
