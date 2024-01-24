@@ -1,6 +1,6 @@
 #!/bin/bash
 
-STANDBY_MSG="\nBig Brother is watching...\n"
+STANDBY_MSG="Big Brother is watching..."
 
 SERVER_IP="localhost"
 SERVER_PORT=8080
@@ -20,6 +20,7 @@ send_xml_files() {
     for file in $(get_xml_files); do
         echo "Sending $file to server..."
         curl -s -X POST http://$SERVER_IP:$SERVER_PORT/api/scans -H "Content-Type: application/xml" --data-binary @$DIRECTORY/$file
+        echo ""
     done
 }
 
@@ -33,6 +34,7 @@ read DIRECTORY
 
 # initial send
 send_xml_files
+echo ""
 echo "$STANDBY_MSG"
 
 # get the number of files in the target directory
@@ -42,6 +44,7 @@ while true; do
     if [ $file_count -ne $(ls -l $DIRECTORY | grep ^- | wc -l) ]; then
         send_xml_files
         file_count=$(ls -l $DIRECTORY | grep ^- | wc -l)
+        echo ""
         echo "$STANDBY_MSG"
     fi
 done
