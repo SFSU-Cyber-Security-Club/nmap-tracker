@@ -1,6 +1,6 @@
 #!/bin/bash
 
-STANDBY_MSG="Big Brother is watching..."
+STANDBY_MSG="\nBig Brother is watching...\n"
 
 SERVER_IP="localhost"
 SERVER_PORT=8080
@@ -19,7 +19,7 @@ get_xml_files() {
 send_xml_files() {
     for file in $(get_xml_files); do
         echo "Sending $file to server..."
-        curl -X POST -F "file=@$file" http://$SERVER_IP:$SERVER_PORT/upload
+        curl -s -X POST http://$SERVER_IP:$SERVER_PORT/api/scans -H "Content-Type: application/xml" --data-binary @$DIRECTORY/$file
     done
 }
 
@@ -39,9 +39,9 @@ echo "$STANDBY_MSG"
 file_count=$(ls -l $DIRECTORY| grep ^- | wc -l)
 # watch for changes in the target directory
 while true; do
-    if [ $file_count -ne $(ls -l $DIRECTORY| grep ^- | wc -l) ]; then
+    if [ $file_count -ne $(ls -l $DIRECTORY | grep ^- | wc -l) ]; then
         send_xml_files
-        file_count=$(ls -l | grep ^- | wc -l)
+        file_count=$(ls -l $DIRECTORY | grep ^- | wc -l)
         echo "$STANDBY_MSG"
     fi
 done
