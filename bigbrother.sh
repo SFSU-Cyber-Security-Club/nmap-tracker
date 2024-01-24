@@ -4,10 +4,11 @@ STANDBY_MSG="Big Brother is watching..."
 
 SERVER_IP="localhost"
 SERVER_PORT=8080
+DIRECTORY="."
 
-# returns xml files in the current directory
+# returns xml files in the target directory
 get_xml_files() {
-    for file in $(ls); do
+    for file in $(ls "$DIRECTORY"); do
         if [[ ${file: -4} == ".xml" ]]; then
             echo $file
         fi
@@ -27,16 +28,18 @@ echo -n "Enter server IP: "
 read SERVER_IP
 echo -n "Enter server port: "
 read SERVER_PORT
+echo -n "Enter directory to watch: "
+read DIRECTORY
 
 # initial send
 send_xml_files
 echo "$STANDBY_MSG"
 
-# get the number of files in the current directory
-file_count=$(ls -l | grep ^- | wc -l)
-# watch for changes in the current directory
+# get the number of files in the target directory
+file_count=$(ls -l $DIRECTORY| grep ^- | wc -l)
+# watch for changes in the target directory
 while true; do
-    if [ $file_count -ne $(ls -l | grep ^- | wc -l) ]; then
+    if [ $file_count -ne $(ls -l $DIRECTORY| grep ^- | wc -l) ]; then
         send_xml_files
         file_count=$(ls -l | grep ^- | wc -l)
         echo "$STANDBY_MSG"
