@@ -5,7 +5,7 @@
       <span th:text="'Start Time: ' + ${scan.startstr}"></span><br />
       <!-- Hosts -->
       <div>
-        Hosts:
+        Hosts (Total <span th:text="${scan.hosts.size()}"></span>):
         <ul>
           <!-- for each host -->
           <li th:each="host : ${scan.hosts}">

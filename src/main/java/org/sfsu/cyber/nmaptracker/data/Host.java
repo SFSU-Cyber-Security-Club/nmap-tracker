@@ -23,6 +23,27 @@ public class Host {
         this.times = times;
     }
 
+    public boolean containsAddr(String address, boolean patternMatch) {
+        if (patternMatch) {
+            return this.address.getAddr().toLowerCase().matches(address.toLowerCase());
+        } else {
+            return this.address.getAddr().equals(address);
+        }
+    }
+
+    public boolean containsAddr(String address) {
+        return containsAddr(address, true);
+    }
+
+    public boolean containsPort(String port) {
+        for (Port p : this.ports) {
+            if (p.getPortid() == Integer.parseInt(port)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // Getters and setters
     public String getAddr() {
         return address.getAddr();

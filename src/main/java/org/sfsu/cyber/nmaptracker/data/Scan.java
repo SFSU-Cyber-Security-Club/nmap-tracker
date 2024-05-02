@@ -17,6 +17,18 @@ public class Scan {
     public Scan() {
     }
 
+    // Needed a copy constructor
+    public Scan(Scan scan) {
+        this.scanner = scan.getScanner();
+        this.args = scan.getArgs();
+        this.start = scan.getStart();
+        this.startstr = scan.getStartstr();
+        this.version = scan.getVersion();
+        this.xmloutputversion = scan.getXmloutputversion();
+        this.hosts = scan.getHosts();
+        this.runstats = scan.getRunstats();
+    }
+
     public Scan(String scanner, String args, long start, String startstr, String version, String xmloutputversion,
             List<Host> hosts, RunStats runstats) {
         this.scanner = scanner;
