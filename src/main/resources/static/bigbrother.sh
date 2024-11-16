@@ -6,6 +6,23 @@ DIRECTORY="."
 AUTO_MODE=false
 SENT_FILES_LOG="$DIRECTORY/.sent_files"
 
+# Checks if a file is NOT being written to (stable)
+function is_stable() {
+	local file="$1"
+
+	if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+		local init_size=$(stat --printf="%s" "$file")
+		sleep 1
+		local new_size=$(stat --printf="%s" "$file")
+	else
+		local init_size=$(stat -f "%z" "$file")
+		sleep 1
+		local new_size=$(stat -f "%z" "$file")
+	fi
+
+	[ "$init_size" -eq "$new_size" ] # If file size hasn't changed, file is stable
+}
+
 # returns xml files in the target directory
 function get_xml_files() {
     for file in "$DIRECTORY"/*.xml; do
@@ -20,30 +37,31 @@ function get_xml_files() {
 # send xml files to the server
 function send_xml_files() {
     for file in $(get_xml_files); do
-        echo "Sending $file to server..."
+		full_path="$DIRECTORY/$file"
 
-		# Send file
-        if curl -s -X POST http://$SERVER_IP:$SERVER_PORT/api/scans \
-			-H "Content-Type: application/xml" \
-			--data-binary @"$DIRECTORY/$file"; then
+		if is_stable "$full_path"; then
+			echo "Sending $file to server..."
 
-			# Log successful send
-			echo "$file" >> "$SENT_FILES_LOG"
+			# Send file
+			if curl -s -X POST http://$SERVER_IP:$SERVER_PORT/api/scans \
+				-H "Content-Type: application/xml" \
+				--data-binary @"$DIRECTORY/$file"; then
+
+				# Log successful send
+				echo "$file" >> "$SENT_FILES_LOG"
+			else
+				echo "Failed to send $file to $SERVER_IP at port: $SERVER_PORT" >&2
+			fi
 		else
-			echo "Failed to send $file to $SERVER_IP at port: $SERVER_PORT" >&2
+			echo "$file currently being written to. Skipping..."
 		fi
     done
 }
 
 function auto_mode() {
-	# get the number of files in the target directory
-	file_count=$(ls -l $DIRECTORY| grep ^- | wc -l)
-	# watch for changes in the target directory
 	while true; do
-		if [ $file_count -ne $(ls -l $DIRECTORY | grep ^- | wc -l) ]; then
-			send_xml_files
-			file_count=$(ls -l $DIRECTORY | grep ^- | wc -l)
-		fi
+		send_xml_files
+		sleep(1000)
 	done
 }
 
@@ -84,7 +102,7 @@ if (( $# == 0 )); then
 fi
 
 # Flag handling
-while getopts "hai:p:d:" flag; do
+while getopts "hani:p:d:" flag; do
 	case $flag in
 		h)
 			echo "help flag selected"
@@ -102,16 +120,19 @@ while getopts "hai:p:d:" flag; do
 			AUTO_MODE=true
 			echo "Auto mode turned ON"
 			;;
+		n)
+			# No set up
+			;;
 		\?)
 			;;
 	esac
 done
 
+# Create log file
 [ ! -f "$SENT_FILES_LOG" ] && touch "$SENT_FILES_LOG"
 
 # Automatic mode
 if [ "$AUTO_MODE" = true ]; then
-	echo ""
 	#inital send
 	send_xml_files
 	echo ""
@@ -123,7 +144,6 @@ else
 	echo "ip: $SERVER_IP"
 	echo "port: $SERVER_PORT"
 	echo "target directory: $DIRECTORY"
-	echo ""
 	send_xml_files
 fi
 
