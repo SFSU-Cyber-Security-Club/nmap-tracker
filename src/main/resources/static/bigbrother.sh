@@ -61,12 +61,11 @@ function send_xml_files() {
 function auto_mode() {
 	while true; do
 		send_xml_files
-		sleep(1000)
+		sleep 1000
 	done
 }
 
 # set up
-echo "Setting up Big Brother..."
 
 # No flag setup
 if (( $# == 0 )); then
@@ -105,7 +104,13 @@ fi
 while getopts "hani:p:d:" flag; do
 	case $flag in
 		h)
-			echo "help flag selected"
+			echo "Flags"
+			echo "-i: ip address"
+			echo "-p: port"
+			echo "-d: target directory"
+			echo "-a: activate auto listen/send"
+			echo "-n: no setup (default ip, port, directory)"
+			exit 1
 			;;
 		i)
 			SERVER_IP=$OPTARG
@@ -127,6 +132,8 @@ while getopts "hani:p:d:" flag; do
 			;;
 	esac
 done
+
+echo "Setting up Big Brother..."
 
 # Create log file
 [ ! -f "$SENT_FILES_LOG" ] && touch "$SENT_FILES_LOG"
