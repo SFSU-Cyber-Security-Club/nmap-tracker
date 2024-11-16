@@ -61,7 +61,6 @@ function send_xml_files() {
 function auto_mode() {
 	while true; do
 		send_xml_files
-		sleep 1000
 	done
 }
 
