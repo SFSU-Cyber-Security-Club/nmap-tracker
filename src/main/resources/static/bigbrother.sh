@@ -1,7 +1,5 @@
 #!/bin/bash
 
-STANDBY_MSG="Big Brother is watching..."
-
 SERVER_IP="localhost"
 SERVER_PORT=8080
 DIRECTORY="."
@@ -11,9 +9,11 @@ SENT_FILES_LOG="$DIRECTORY/.sent_files"
 # returns xml files in the target directory
 function get_xml_files() {
     for file in "$DIRECTORY"/*.xml; do
-        if [[ ${file: -4} == ".xml" ]]; then
-            echo $file
-        fi
+		[ -e "$file" ] || continue # No XML files exit
+
+		if ! grep -Fxq "$(basename "$file")" "$SENT_FILES_LOG"; then
+			echo "$(basename "$file")"
+		fi
     done
 }
 
@@ -22,15 +22,20 @@ function send_xml_files() {
     for file in $(get_xml_files); do
         echo "Sending $file to server..."
 
-        curl -s -X POST http://$SERVER_IP:$SERVER_PORT/api/scans -H "Content-Type: application/xml" --data-binary @$DIRECTORY/$file
-        echo ""
+		# Send file
+        if curl -s -X POST http://$SERVER_IP:$SERVER_PORT/api/scans \
+			-H "Content-Type: application/xml" \
+			--data-binary @"$DIRECTORY/$file"; then
+
+			# Log successful send
+			echo "$file" >> "$SENT_FILES_LOG"
+		else
+			echo "Failed to send $file to $SERVER_IP at port: $SERVER_PORT" >&2
+		fi
     done
 }
 
 function auto_mode() {
-	echo "$STANDBY_MSG"
-
-
 	# get the number of files in the target directory
 	file_count=$(ls -l $DIRECTORY| grep ^- | wc -l)
 	# watch for changes in the target directory
@@ -38,7 +43,6 @@ function auto_mode() {
 		if [ $file_count -ne $(ls -l $DIRECTORY | grep ^- | wc -l) ]; then
 			send_xml_files
 			file_count=$(ls -l $DIRECTORY | grep ^- | wc -l)
-			echo "$STANDBY_MSG"
 		fi
 	done
 }
@@ -87,29 +91,40 @@ while getopts "hai:p:d:" flag; do
 			;;
 		i)
 			SERVER_IP=$OPTARG
-			echo "ip: $OPTARG"
 			;;
 		p)
 			SERVER_PORT=$OPTARG
-			echo "port: $OPTARG"
 			;;
 		d)
 			DIRECTORY=$OPTARG
-			echo "directory: $OPTARG"
 			;;
-		c)
-			echo "Continuous listen mode enabled"
+		a)
+			AUTO_MODE=true
+			echo "Auto mode turned ON"
 			;;
 		\?)
 			;;
 	esac
 done
 
-# initial send
 [ ! -f "$SENT_FILES_LOG" ] && touch "$SENT_FILES_LOG"
-send_xml_files
 
 # Automatic mode
-if [ "$AUTO_MODE" = true ] ; then
+if [ "$AUTO_MODE" = true ]; then
+	echo ""
+	#inital send
+	send_xml_files
+	echo ""
+	echo "Big Brother is watching..."
 	auto_mode
+else
+	echo ""
+	echo "Server:"
+	echo "ip: $SERVER_IP"
+	echo "port: $SERVER_PORT"
+	echo "target directory: $DIRECTORY"
+	echo ""
+	send_xml_files
 fi
+
+echo ""
